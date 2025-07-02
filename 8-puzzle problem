@@ -1,0 +1,42 @@
+import random
+
+class Puzzle:
+    def __init__(self, board=None):
+        if board is None:
+            self.board = self.generate_board()
+        else:
+            self.board = board
+
+    def generate_board(self):
+        numbers = list(range(9))
+        random.shuffle(numbers)
+        return [numbers[i:i + 3] for i in range(0, 9, 3)]
+
+    def display(self):
+        for row in self.board:
+            print(" ".join(str(num) if num != 0 else " " for num in row))
+
+    def find_zero(self):
+        for i, row in enumerate(self.board):
+            for j, num in enumerate(row):
+                if num == 0:
+                    return i, j
+
+    def move(self, direction):
+        x, y = self.find_zero()
+        if direction == 'up' and x > 0:
+            self.board[x][y], self.board[x - 1][y] = self.board[x - 1][y], self.board[x][y]
+        elif direction == 'down' and x < 2:
+            self.board[x][y], self.board[x + 1][y] = self.board[x + 1][y], self.board[x][y]
+        elif direction == 'left' and y > 0:
+            self.board[x][y], self.board[x][y - 1] = self.board[x][y - 1], self.board[x][y]
+        elif direction == 'right' and y < 2:
+            self.board[x][y], self.board[x][y + 1] = self.board[x][y + 1], self.board[x][y]
+
+    def is_solved(self):
+        return self.board == [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+
+if __name__ == "__main__":
+    puzzle = Puzzle()
+    puzzle.display()
+    while
